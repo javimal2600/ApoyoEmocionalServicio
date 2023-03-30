@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Encuesta;
-use App\Models\Cliente;
-use App\Models\Psicologo;
+use App\Models\Mascota;
 
 class EncuestaController extends Controller
 {
@@ -22,15 +21,36 @@ class EncuestaController extends Controller
     public function index()
     {
         //
-        $encuestas = \DB::table('encuestas')
-        ->join('psicologos','psicologos.id','=','encuestas.psicologo_id')
-        ->join('clientes','clientes.id','=','encuestas.cliente_id')
-        ->select('encuestas.id as id_encuesta',
-        'clientes.nombre as client','clientes.id','psicologos.nombre as psico','psicologos.id')
+        $encuesta = \DB::table('encuestas')
+        ->join('mascotas','mascotas_id','=','encuesta.encuesta_id')
+        ->select('nombre',
+        'mascota_id','mascotas.nombre as nombreM',
+        'colonia',
+        'delegacion',
+        'ciudad',
+        'codigoPostal',
+        'tipocasa',
+        'edad',
+        'edades',
+        'profesion',
+        'animales',
+        'mascotasAntes',
+        'gasto',
+        'tiempo',
+        'dormir',
+        'paseo',
+        'dejarMascotaP',
+        'cambioCasa',
+        'compromiso',
+        'economia',
+        'porqueAdopcion',
+        'otraMascota',
+        'celular',
+        'email')
         ->get();
 
-        return view('encuestas.index')
-            ->with('encuestas',$encuestas);
+        return view('encuesta.index')
+            ->with('encuesta',$encuesta);
 
     }
 
@@ -42,11 +62,9 @@ class EncuestaController extends Controller
     public function create()
     {
         //
-        $clientes = Cliente::all();
-        $psicologos = Psicologo::all();
+        $mascotas = Mascota::all();
         return view('Encuestas.create')
-            ->with('clientes',$clientes)
-            ->with('psicologos',$psicologos);
+            ->with('mascotas',$mascotas);
     }
 
     /**
@@ -60,14 +78,29 @@ class EncuestaController extends Controller
         //
         $encuesta = new Encuesta();
 
-        $encuesta->cliente_id = $request->get('cliente_id');
-        $encuesta->psicologo_id = $request->get('psicologo_id');
-        $encuesta->pr1 = $request->get('pr1');
-        $encuesta->pr2 = $request->get('pr2');
-        $encuesta->pr3 = $request->get('pr3');
-        $encuesta->pr4 = $request->get('pr4');
-        $encuesta->pr5 = $request->get('pr5');
-        $encuesta->pr6 = $request->get('pr6');
+        $encuesta->nombre = $request->get('nombre');
+        $encuesta->mascota_id = $request->get('mascota_id');
+        $encuesta->colonia = $request->get('colonia');
+        $encuesta->delegacion = $request->get('delegacion');
+        $encuesta->ciudad = $request->get('ciudad');
+        $encuesta->codigoPostal = $request->get('codigoPostal');
+        $encuesta->tipocasa = $request->get('tipocasa');
+        $encuesta->edad = $request->get('edad');
+        $encuesta->edades = $request->get('edades');
+        $encuesta->profesion = $request->get('profesion');
+        $encuesta->animales = $request->get('animales');
+        $encuesta->mascotasAntes = $request->get('mascotasAntes');
+        $encuesta->gesto = $request->get('gesto');
+        $encuesta->tiempo = $request->get('tiempo');
+        $encuesta->paseo = $request->get('paseo');
+        $encuesta->dejarMascota = $request->get('dejarMascota');
+        $encuesta->cambioCasa = $request->get('cambioCasa');
+        $encuesta->compromiso = $request->get('compromiso');
+        $encuesta->economia = $request->get('economia');
+        $encuesta->porqueAdopcion = $request->get('porqueAdopcion');
+        $encuesta->otraMascota = $request->get('otraMascota');
+        $encuesta->celular = $request->get('celular');
+        $encuesta->email = $request->get('email');
 
         $encuesta->save();
 
@@ -95,13 +128,6 @@ class EncuestaController extends Controller
     public function edit($id)
     {
         //
-        $psicologos = Psicologo::all();
-        $clientes = Cliente::all();
-        $encuesta = Encuesta::find($id);
-        return view('encuestas.edit')
-        ->with('encuesta',$encuesta)
-        ->with('psicologos',$psicologos)
-        ->with('clientes',$clientes);
     }
 
     /**
@@ -114,19 +140,6 @@ class EncuestaController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $encuesta = Encuesta::find($id);
-        $encuesta->cliente_id = $request->get('cliente_id');
-        $encuesta->psicologo_id = $request->get('psicologo_id');
-        $encuesta->pr1 = $request->get('pr1');
-        $encuesta->pr2 = $request->get('pr2');
-        $encuesta->pr3 = $request->get('pr3');
-        $encuesta->pr4 = $request->get('pr4');
-        $encuesta->pr5 = $request->get('pr5');
-        $encuesta->pr6 = $request->get('pr6');
-
-        $encuesta->save();
-
-        return redirect('/encuestas');
     }
 
     /**

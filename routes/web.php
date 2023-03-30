@@ -31,12 +31,13 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\ResetPassword;
-use App\Http\Controllers\ChangePassword;       
-use App\Http\Controllers\PsicologoController;   
-use App\Http\Controllers\ClienteController;  
+use App\Http\Controllers\ChangePassword;
+use App\Http\Controllers\PsicologoController;
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\RefugioController;
 use App\Http\Controllers\MascotaController;
-            
+use App\Http\Controllers\EncuestaController;
+
 
 Route::get('/', function () {return redirect('/dashboard');})->middleware('auth');
 	Route::get('/register', [RegisterController::class, 'create'])->middleware('guest')->name('register');
@@ -73,14 +74,17 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/guardar_mascota', [MascotaController::class, 'store'])->name('guardar_mascota');
 	Route::post('/update_mascota{id}', [MascotaController::class, 'update'])->name('update_mascota');
 	Route::get('/delete_mascota{id}', [MascotaController::class, 'destroy'])->name('delete_mascota');
-	//
-	Route::get('/profile-static', [PageController::class, 'profile'])->name('profile-static'); 
+	//Encuesta
+    Route::get('/encuesta', [EncuestaController::class, 'index'])->name('encuesta');
+	Route::post('/guardar_encuesta', [EncuestaController::class, 'store'])->name('guardar_encuesta');
+    //
+	Route::get('/profile-static', [PageController::class, 'profile'])->name('profile-static');
 	Route::get('/sign-in-static', [PageController::class, 'signin'])->name('sign-in-static');
-	Route::get('/sign-up-static', [PageController::class, 'signup'])->name('sign-up-static'); 
+	Route::get('/sign-up-static', [PageController::class, 'signup'])->name('sign-up-static');
 	Route::get('/{page}', [PageController::class, 'index'])->name('page');
 	Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 });
 
-Route::resource('encuestas','App\Http\Controllers\EncuestaController');
+Route::resource('encuesta','App\Http\Controllers\EncuestaController');
 Route::resource('solicituds','App\Http\Controllers\SolicitudController');
 Route::resource('adopcions','App\Http\Controllers\AdopcionController');
